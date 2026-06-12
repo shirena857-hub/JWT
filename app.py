@@ -148,7 +148,7 @@ def internal_generate_jwt(access_token, open_id=None):
         game_data.timestamp = "2024-12-05 18:15:32"
         game_data.game_name = "free fire"
         game_data.game_version = 1
-        game_data.version_code = "1.108.3"
+        game_data.version_code = "1.123.1"
         game_data.os_info = "Android OS 9 / API-28 (PI/rel.cjw.20220518.114133)"
         game_data.device_type = "Handheld"
         game_data.network_provider = "Verizon Wireless"
@@ -266,7 +266,7 @@ def api_docs():
         "status": "success",
         "message": "Welcome to the FF JWT Generator API. This API allows you to extract Decoded Account Names, Details, and JWT Tokens.",
         "endpoints": {
-            "/guest": {
+            "/token": {
                 "methods":["GET", "POST"],
                 "description": "Generate JWT using Free Fire Guest Login credentials.",
                 "parameters": {
@@ -274,18 +274,18 @@ def api_docs():
                     "password": "String (Required) - The Guest Account Password"
                 },
                 "examples": {
-                    "GET": "/guest?uid=12345678&password=your_password_here",
+                    "GET": "/token?uid=12345678&password=your_password_here",
                     "POST_JSON": {"uid": "12345678", "password": "your_password_here"}
                 }
             },
-            "/token": {
+            "/access": {
                 "methods": ["GET", "POST"],
                 "description": "Generate JWT using a valid Garena Access Token.",
                 "parameters": {
                     "access_token": "String (Required) - Active Free Fire Access Token"
                 },
                 "examples": {
-                    "GET": "/token?access_token=YOUR_ACCESS_TOKEN",
+                    "GET": "/access?access_token=YOUR_ACCESS_TOKEN",
                     "POST_JSON": {"access_token": "YOUR_ACCESS_TOKEN"}
                 }
             },
@@ -324,7 +324,7 @@ def api_docs():
 # -------------------------------------------------------------
 # API ENDPOINTS
 # -------------------------------------------------------------
-@app.route('/token', methods=['GET', 'POST'])
+@app.route('/access', methods=['GET', 'POST'])
 def token_endpoint():
     access_token = get_request_param('access_token')
     
@@ -333,7 +333,7 @@ def token_endpoint():
             "status": "error",
             "message": "The 'access_token' parameter is missing or empty!",
             "correct_usage": {
-                "GET": "/token?access_token=YOUR_ACCESS_TOKEN",
+                "GET": "/access?access_token=YOUR_ACCESS_TOKEN",
                 "POST": {"access_token": "YOUR_ACCESS_TOKEN"}
             }
         }), 400
@@ -342,7 +342,7 @@ def token_endpoint():
     return jsonify(result), status_code
 
 
-@app.route('/guest', methods=['GET', 'POST'])
+@app.route('/token', methods=['GET', 'POST'])
 def guest_endpoint():
     uid = get_request_param('uid')
     password = get_request_param('password')
@@ -352,7 +352,7 @@ def guest_endpoint():
             "status": "error",
             "message": "Both 'uid' and 'password' parameters are required!",
             "correct_usage": {
-                "GET": "/guest?uid=YOUR_UID&password=YOUR_PASSWORD",
+                "GET": "/token?uid=YOUR_UID&password=YOUR_PASSWORD",
                 "POST": {"uid": "YOUR_UID", "password": "YOUR_PASSWORD"}
             }
         }), 400
