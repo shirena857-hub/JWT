@@ -266,7 +266,7 @@ def api_docs():
         "status": "success",
         "message": "Welcome to the FF JWT Generator API. This API allows you to extract Decoded Account Names, Details, and JWT Tokens.",
         "endpoints": {
-            "/token": {
+            "/get": {
                 "methods":["GET", "POST"],
                 "description": "Generate JWT using Free Fire Guest Login credentials.",
                 "parameters": {
@@ -274,7 +274,7 @@ def api_docs():
                     "password": "String (Required) - The Guest Account Password"
                 },
                 "examples": {
-                    "GET": "/token?uid=12345678&password=your_password_here",
+                    "GET": "/get?uid=12345678&password=your_password_here",
                     "POST_JSON": {"uid": "12345678", "password": "your_password_here"}
                 }
             },
@@ -342,7 +342,7 @@ def token_endpoint():
     return jsonify(result), status_code
 
 
-@app.route('/token', methods=['GET', 'POST'])
+@app.route('/get', methods=['GET', 'POST'])
 def guest_endpoint():
     uid = get_request_param('uid')
     password = get_request_param('password')
