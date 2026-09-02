@@ -136,8 +136,8 @@ def outfit_image():
         {'x': 575, 'y': 550, 'height': 150, 'width': 150},  # top
         {'x': 350, 'y': 654, 'height': 150, 'width': 150},  # bottom
         {'x': 135, 'y': 570, 'height': 150, 'width': 150},  # shoe
-        {'x': 115, 'y': 490, 'height': 150, 'width': 150},  # ← weapon skin (adjust)
-        {'x': 500, 'y': 400, 'height': 150, 'width': 150},  # ← weapon animation (adjust)
+        {'x': 179, 'y': 603, 'height': 150, 'width': 150},  # ← weapon skin (adjust)
+        {'x': 99, 'y': 791, 'height': 150, 'width': 150},  # ← weapon animation (adjust)
     ]
 
     for idx, future in enumerate(futures):
