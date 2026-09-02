@@ -53,10 +53,10 @@ def outfit_image():
     if player_data is None:
         return jsonify({'error': 'Failed to fetch player info'}), 500
 
-    # ---- Outfit IDs ----
+    # ---- Outfit IDs (6 pieces) ----
     outfit_ids = player_data.get("AccountProfileInfo", {}).get("EquippedOutfit", []) or []
-    required_starts = ["211", "214", "211", "203", "204", "205", "203"]
-    fallback_ids = ["211000000", "214000000", "208000000", "203000000", "204000000", "205000000", "212000000"]
+    required_starts = ["211", "214", "211", "203", "204", "205"]   # 6 entries
+    fallback_ids = ["211000000", "214000000", "208000000", "203000000", "204000000", "205000000"]
     used_ids = set()
 
     def fetch_outfit_image(idx, code):
@@ -86,7 +86,7 @@ def outfit_image():
         image_url = f'https://iconapi.wasmer.app/{weapon_id}'
         return fetch_and_process_image(image_url, size=(150, 150))
 
-    # ---- Build all fetch tasks (7 outfits + 2 weapons) ----
+    # ---- Build all fetch tasks (6 outfits + 2 weapons) ----
     futures = []
     for idx, code in enumerate(required_starts):
         futures.append(executor.submit(fetch_outfit_image, idx, code))
@@ -128,8 +128,7 @@ def outfit_image():
     canvas = Image.new("RGBA", (canvas_w, canvas_h), (0, 0, 0, 255))
     canvas.paste(background_resized, (offset_x, offset_y), background_resized)
 
-    # ---- All positions: first 7 for outfits, last 2 for weapons ----
-    # Adjust the x/y for the weapon slots to match your background empty spots.
+    # ---- Positions: 6 outfits + 2 weapons (weapon coordinates are placeholders) ----
     positions = [
         {'x': 350, 'y': 30, 'height': 150, 'width': 150},   # head
         {'x': 575, 'y': 130, 'height': 150, 'width': 150},  # faceprint
@@ -137,7 +136,6 @@ def outfit_image():
         {'x': 575, 'y': 550, 'height': 150, 'width': 150},  # top
         {'x': 350, 'y': 654, 'height': 150, 'width': 150},  # bottom
         {'x': 135, 'y': 570, 'height': 150, 'width': 150},  # shoe
-        {'x': 135, 'y': 130, 'height': 150, 'width': 150},  # (7th outfit)
         {'x': 350, 'y': 400, 'height': 150, 'width': 150},  # ← weapon skin (adjust)
         {'x': 500, 'y': 400, 'height': 150, 'width': 150},  # ← weapon animation (adjust)
     ]
